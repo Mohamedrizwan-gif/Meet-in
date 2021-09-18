@@ -31,6 +31,7 @@ function Chat(props) {
                 chatRef.current.scrollIntoView({behavior:'smooth'});
             }
         });
+        setchatMsg('');
     }
 
     useEffect(() => {

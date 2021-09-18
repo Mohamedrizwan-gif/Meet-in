@@ -4,6 +4,7 @@ import { Button, Avatar, Box, Divider } from '@material-ui/core';
 import { GoogleLogin } from 'react-google-login';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Transition from 'react-transition-group/Transition';
+import ShareIcon from '@material-ui/icons/Share';
 
 import { authAction } from '../../../store/index';
 import socket from '../../../utils/socket';
@@ -16,6 +17,22 @@ function Navbar(props) {
     const usermail = useSelector(state => state.auth.user_mail);
     const userimg = useSelector(state => state.auth.user_img);
     const dispatch = useDispatch();
+
+    const onShare = (meetid) => {
+        if(navigator.share) {
+            navigator.share({
+                title: 'Meet-in',
+                text: 'To join the meeting on the meet-in, click the link',
+                url: `${window.location.href}${meetid}`
+            })
+            .then(() => {
+                console.log('shared succesfully');
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+    }
 
     const responseGoogle = (response) => {
         if(response.profileObj) {
@@ -102,6 +119,11 @@ function Navbar(props) {
                                                                 {new Date(`${data.createdAt}`).toLocaleTimeString().split(':')[0]}:
                                                                 {new Date(`${data.createdAt}`).toLocaleTimeString().split(':')[1]}&nbsp;
                                                                 {new Date(`${data.createdAt}`).toLocaleTimeString().split(' ')[1]}
+                                                            </td>
+                                                            <td>
+                                                                <Button onClick={onShare.bind(this, data.meet_id)}>
+                                                                    <ShareIcon/>
+                                                                </Button>
                                                             </td>
                                                         </tr>
                                                     )

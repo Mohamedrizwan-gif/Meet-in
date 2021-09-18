@@ -3,7 +3,7 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 
 import maximize from '../../../../../assets/icons/maximize.svg';
 import minimize from '../../../../../assets/icons/minimize.svg';
-import styles from './video.module.css';
+import styles from './Video.module.css';
 
 function Video(props) {
     const [screenheight, setScreenHeight] = useState('300px');
@@ -79,7 +79,7 @@ function Video(props) {
             <video 
                 ref={videoref}
                 className={`${styles.video} ${viewFullScreen ? styles.fullscreen : ''}`}  
-                // muted={props.index === 0 && "muted"}
+                muted={props.index === 0 ? "muted" : ''}
                 autoPlay
             /> 
             <div className={styles.username}>{props.index === 0 ? 'you' : username}</div>

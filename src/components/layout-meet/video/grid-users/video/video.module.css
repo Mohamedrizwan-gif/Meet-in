@@ -15,12 +15,12 @@
 }
 
 .username {
-    font-family: 'Noto Serif TC', serif;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
-    color: navajowhite;
+    color: #f4f4f4;
+    font-weight: 600;
     font-size: 15px;
 }
 
