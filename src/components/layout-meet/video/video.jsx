@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { Backdrop, CircularProgress } from '@material-ui/core';
 import Peer from 'peerjs';
 
 import { streamAction } from '../../../store/index';
