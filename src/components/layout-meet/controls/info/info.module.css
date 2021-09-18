@@ -1,0 +1,31 @@
+.dialogtitle {
+    font-family: 'Capriola', sans-serif;
+    font-size: 16px;
+}
+
+.closebtn {
+    position: absolute !important;
+    top: 7%;
+    right: 0;
+}
+
+.dialogcontent {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dialogaction {
+    display: contents !important;
+}
+
+.dialogactionbtn {
+    background-color: lightgray !important;
+}
+
+.meetid {
+    margin: auto;
+    text-align: center;
+    background: #dfdddd;
+    width: 100%;
+    border-radius: 10px;
+}

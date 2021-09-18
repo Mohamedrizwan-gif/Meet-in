@@ -1,0 +1,48 @@
+.dialogtitle {
+    font-family: 'Capriola', sans-serif;
+    font-size: 16px;
+}
+
+.closebtn {
+    position: absolute !important;
+    top: 4%;
+    right: 0;
+}
+
+.chatbox {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+}
+
+.chat {
+    font-size: smaller;
+    width: auto;
+    border-radius: 5px;
+    background-color: #eee8e8;
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+.chattime {
+    font-family: 'Baloo Chettan 2';
+}
+
+.chatmsg {
+    font-family: cursive;
+    font-size: 15px;
+}
+
+.input-send {
+    width: 100%;
+    padding: 10px;
+    background-color: #dfdddd;
+    border-radius: 15px;
+    border: 1px solid #bfbaba;
+    outline: none;
+}
+
+.btn-send {
+    position: absolute !important;
+    right: 6px;
+}

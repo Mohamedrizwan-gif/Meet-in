@@ -1,0 +1,130 @@
+.meet {
+    background: #826464;/*#d3cfcf*/
+    min-height: 100vh;
+}
+
+.toolbar {
+    background-color: #484040;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.people-layout {
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    width: 200px;
+    height: 60%;
+    border: 1px solid grey;
+    border-radius: 15px;
+    background-color: white;
+    z-index: 1;
+}
+
+.toparrow {
+    position: fixed !important;
+    top: 1%;
+    left: 1%;
+    min-width: 40px !important;
+}
+
+.btn-flipcamera {
+    color: #fff !important;
+    min-width: 40px !important;
+    min-height: 42px;
+}
+
+.roominfo {
+    position: absolute;
+    top: 11%;
+    left: 50%;
+    min-width: max-content;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    border-radius: 5px;
+    background-color: white;
+    font-weight: 500;
+    padding: 10px;
+}
+
+.roominfo-open {
+    animation: open-roominfo 0.6s ease-in-out forwards;
+}
+
+.roominfo-close {
+    animation: close-roominfo 0.6s ease-in forwards;
+}
+
+.btn-group-menu {
+    position: fixed;
+    right: 5%;
+    bottom: 10%;
+    background-color: white;
+    border-radius: 5px 5px 0 0;
+    z-index: 1;
+}
+
+.btn-group-menu-open {
+    animation: open-btn-group-menu 0.4s linear forwards;
+}
+
+.btn-group-menu-close {
+    animation: close-btn-group-menu 0.4s linear forwards;
+}
+
+.menu {
+    position: fixed !important;
+    right: 5%;
+    bottom: 5%;
+    min-width: 40px !important;
+    background-color: white !important;
+    z-index: 1;
+}
+
+@keyframes  open-roominfo {
+    0% {
+        left: -24%;
+    }
+    100% {
+        left: 50%;
+    }
+}
+
+@keyframes  close-roominfo {
+    0% {
+        left: 50%;
+    }
+    100% {
+        left: -24%;
+    }
+}
+
+@keyframes open-btn-group-menu {
+    0% {
+        opacity: 0;
+        bottom: 5%
+    }
+    100% {
+        opacity: 1;
+        bottom: 10%;
+    }
+}
+
+@keyframes close-btn-group-menu {
+    0% {
+        opacity: 1;
+        bottom: 10%;
+    }
+    100% {
+        opacity: 0;
+        bottom: 5%;
+    }
+}
+
+@media (min-width: 500px) {
+    .roominfo {
+        top: 4%;
+        font-size: 14px;
+    }
+}

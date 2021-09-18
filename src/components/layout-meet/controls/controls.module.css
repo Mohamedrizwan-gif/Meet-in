@@ -1,0 +1,33 @@
+.callend {
+    position: fixed !important;
+    color: white !important;
+    background-color: #f02e2e  !important;
+    border-radius: 18px !important;
+    min-width: 50px !important;
+    left: 10%;
+    bottom: 1%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.controls {
+    position: fixed;
+    background-color: white;
+    border-radius: 10px;
+    left: 50%;
+    bottom: 1%;
+    width: max-content;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.morevert {
+    position: fixed !important;
+    background-color: white !important;
+    border-radius: 18px !important;
+    min-width: 50px !important;
+    left: 90%;
+    bottom: 1%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
