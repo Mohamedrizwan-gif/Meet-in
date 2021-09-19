@@ -3,7 +3,7 @@ import MicOffIcon from '@material-ui/icons/MicOff';
 
 import maximize from '../../../../../assets/icons/maximize.svg';
 import minimize from '../../../../../assets/icons/minimize.svg';
-import styles from './Video.module.css';
+import styles from './video.module.css';
 
 function Video(props) {
     const [screenheight, setScreenHeight] = useState('300px');
@@ -27,8 +27,8 @@ function Video(props) {
         // const frequencyData = new Uint8Array(analyser.frequencyBinCount);
 
         // const interval = setInterval(() => {
-            // analyser.getByteFrequencyData(frequencyData);
-            // console.log(frequencyData[0])
+        //     analyser.getByteFrequencyData(frequencyData);
+        //     console.log(frequencyData[0])
         // },300);
         // return () => {
         //     clearInterval(interval);
@@ -40,9 +40,7 @@ function Video(props) {
         const navbarheight = document.getElementById('meet_navbar').offsetHeight;
         setScreenHeight((window.screen.height / 2) - (navbarheight/2) + 'px');
         videoref.current.srcObject = props.stream;
-        if(props.index !== 0) {
-            videoref.current.muted = true;
-        }
+        videoref.current.volume = 0;
         if(props.stream.getVideoTracks().length === 0) {
             videoref.current.style.backgroundColor = 'black';
         }

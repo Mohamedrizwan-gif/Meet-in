@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import Video from './Video/Video';
+import Video from './video/video';
 import styles from './grid-user.module.css';
 
 function Gridusers(props) {
