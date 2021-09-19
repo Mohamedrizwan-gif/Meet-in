@@ -40,7 +40,9 @@ function Video(props) {
         const navbarheight = document.getElementById('meet_navbar').offsetHeight;
         setScreenHeight((window.screen.height / 2) - (navbarheight/2) + 'px');
         videoref.current.srcObject = props.stream;
-        videoref.current.volume = 0;
+        if(props.index === 0) {
+            videoref.current.volume = 0;
+        }
         if(props.stream.getVideoTracks().length === 0) {
             videoref.current.style.backgroundColor = 'black';
         }
