@@ -49,6 +49,7 @@ function Controls() {
     const usermail = useSelector(state => state.auth.user_mail);
 
     const handleCallEnded = () => {
+        socket.disconnect();
         history.replace('/');
     }
 

@@ -14,7 +14,7 @@ function Video(props) {
     const videoref = useRef();
     const imgref = useRef();
 
-    useEffect(() => {
+    useEffect(() => {        
         // let audioCtx = new AudioContext();
         // let source = audioCtx.createMediaStreamSource(props.stream);
         // let analyser = audioCtx.createAnalyser();
@@ -40,7 +40,13 @@ function Video(props) {
         const navbarheight = document.getElementById('meet_navbar').offsetHeight;
         setScreenHeight((window.screen.height / 2) - (navbarheight/2) + 'px');
         videoref.current.srcObject = props.stream;
-    }, [props.stream]);
+        if(props.index !== 0) {
+            videoref.current.muted = true;
+        }
+        if(props.stream.getVideoTracks().length === 0) {
+            videoref.current.style.backgroundColor = 'black';
+        }
+    }, [props.stream, props.index]);
 
     useEffect(() => {
         if(props.controls) {
@@ -79,7 +85,7 @@ function Video(props) {
             <video 
                 ref={videoref}
                 className={`${styles.video} ${viewFullScreen ? styles.fullscreen : ''}`}  
-                muted={props.index === 0 ? "muted" : ''}
+                // muted={props.index !== 0 ? "muted" : ''}
                 autoPlay
             /> 
             <div className={styles.username}>{props.index === 0 ? 'you' : username}</div>
