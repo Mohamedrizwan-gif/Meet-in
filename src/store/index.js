@@ -3,6 +3,8 @@ import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const initialManageState = {
     route_meet: false,
+    spin: true,
+    flip_camera: 0
 };
 
 const manageSlice = createSlice({
@@ -11,6 +13,12 @@ const manageSlice = createSlice({
     reducers: {
         setrouteMeet(state, action) {
             state.route_meet = action.payload;
+        },
+        setSpin(state, action) {
+            state.spin = action.payload;
+        },
+        setFlipCamera(state, action) {
+            state.flip_camera = action.payload;
         }
     }
 });
@@ -43,8 +51,7 @@ const initialStreamState = {
     screen_stream: null,
     active_badge: null,
     active_stream: null,
-    current_peer: null,
-    flip_camera: null,
+    current_peer: null
 }
 
 const streamSlice = createSlice({
@@ -65,9 +72,6 @@ const streamSlice = createSlice({
         },
         setCurrentPeer(state, action) {
             state.current_peer = action.payload;
-        },
-        setFlipCamera(state, action) {
-            state.flip_camera = action.payload;
         }
     }
 });

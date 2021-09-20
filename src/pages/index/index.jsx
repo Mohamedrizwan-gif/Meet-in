@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { 
     AppBar, Toolbar, Button, Grid, 
-    CircularProgress, Paper, Snackbar 
+    CircularProgress, Paper, Snackbar, IconButton
 } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import VideocamIcon from '@material-ui/icons/Videocam';
@@ -164,20 +164,44 @@ function Index() {
             <br/>
             {/* error snackbar */}
             <Snackbar
-                open={alert.length > 0}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    open={alert.length > 0}
+                    autoHideDuration={9000}
+                    message={alert}
+                    onClose={() => setAlert('')}
+                    action={
+                        <>
+                            <IconButton 
+                                aria-label="close" 
+                                color="inherit" 
+                                size="small"    
+                                onClick={() => setAlert('')}
+                            >
+                                <CloseIcon/>
+                            </IconButton>
+                        </>
+                    }
+                />
+            <Snackbar
                 anchorOrigin={{
-                    vertical: 'top',
+                    vertical: 'bottom',
                     horizontal: 'center'
                 }}
-                autoHideDuration={3000}
-                message={alert}
-                onClose={() => setAlert('')}
-            />
-            <Snackbar
                 open={error.length > 0}
-            >
-                <Alert severity="error">{error}</Alert>
-            </Snackbar>
+                autoHideDuration={9000}
+                message={error}
+                onClose={() => setError('')}
+                action={
+                    <>
+                        <IconButton size="small" aria-label="close" onClick={() => setError('')}>
+                            <CloseIcon/>
+                        </IconButton>
+                    </>
+                }
+            />
             {/* error snackbar */}
             <Grid container>
                 <Grid item xs={12} md={6}>

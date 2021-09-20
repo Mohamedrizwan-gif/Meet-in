@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Avatar, Box, Divider } from '@material-ui/core';
+import { Button, Avatar, Box, Divider, Snackbar } from '@material-ui/core';
 import { GoogleLogin } from 'react-google-login';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Transition from 'react-transition-group/Transition';
@@ -13,6 +13,7 @@ import styles from './navbar.module.css';
 function Navbar(props) {
     const [timedate, setTimeDate] = useState('');
     const [recentMeetings, setRecentMeetings] = useState([]);
+    const [open, setOpen] = useState(false);
     const username = useSelector(state => state.auth.user_name);
     const usermail = useSelector(state => state.auth.user_mail);
     const userimg = useSelector(state => state.auth.user_img);
@@ -43,6 +44,19 @@ function Navbar(props) {
             dispatch(authAction.setuserMail(response.profileObj.email));
             dispatch(authAction.setuserImg(response.profileObj.imageUrl));
         }
+    }
+
+    const handleTooltipOpen = () => {
+        setOpen(true);
+        // setTimeout(() => setOpen(false), 500);
+    }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
     }
 
     const onSignout = () => {
@@ -80,6 +94,12 @@ function Navbar(props) {
         <>
             <div className={styles.header}>Meet-in</div>
             <div className={styles.date}>{timedate}</div>
+            <Snackbar
+                open={open}
+                onClose={handleClose}
+                autoHideDuration={1000}
+                message="Copied"
+            />
             {usermail === null ?
                 <GoogleLogin
                     clientId="1055288869825-5vi937dcmouif088tvf5qvptkl703a2p.apps.googleusercontent.com"
@@ -97,7 +117,10 @@ function Navbar(props) {
                     <Transition in={props.recentMeeting} timeout={400} mountOnEnter unmountOnExit>
                         {state =>  {
                             return (
-                                    <Box className={`${styles['meeting-bar']} ${props.recentMeeting ? styles['open-meeting-bar'] : ''}`} boxShadow={12}>
+                                    <Box 
+                                        className={`${styles['meeting-bar']} ${props.recentMeeting ? styles['open-meeting-bar'] : ''}`} 
+                                        boxShadow={12}
+                                    >
                                         {recentMeetings.length !== 0 ?
                                         <table>
                                             <thead>
@@ -111,8 +134,8 @@ function Navbar(props) {
                                                     return (
                                                         <tr key={index}> 
                                                             <td>
-                                                                <CopyToClipboard text={data.meet_id}>
-                                                                    <Button>{data.meet_id}</Button>
+                                                                <CopyToClipboard text={data.meet_id}> 
+                                                                    <Button onClick={handleTooltipOpen}>{data.meet_id}</Button>
                                                                 </CopyToClipboard>
                                                             </td>
                                                             <td>

@@ -41,10 +41,10 @@ function Joinroom(props) {
     const history = useHistory();
     const params = useParams();
     const dispatch = useDispatch();
-    /* selector ---> auth */
     const username = useSelector(state => state.auth.user_name);  
     const usermail = useSelector(state => state.auth.user_mail);
     const userimg = useSelector(state => state.auth.user_img);
+    const avstream = useSelector(state => state.stream.avstream);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -63,7 +63,7 @@ function Joinroom(props) {
             setError('Please allow access to your camera and microphone');
             return;
         }
-        if(!usermail && !username) {
+        if(!usermail && !username && !userimg) {
             setError('Please login into continue');
             return;
         }
@@ -76,7 +76,7 @@ function Joinroom(props) {
             setError('Please allow access to your camera and microphone');
             return;
         }
-        if(!usermail && !username) {
+        if(!usermail && !username && !userimg) {
             setError('Please login into continue');
             return;
         }        
@@ -93,8 +93,15 @@ function Joinroom(props) {
             setError('Please allow access to your camera and microphone');
             return;
         }
-        if(!usermail && !username) {
+        if(!usermail && !username && !userimg) {
             setError('Please login into continue');
+            return;
+        }
+        if(avstream?.getTracks().length === 0) {
+            setError('Please check your media connection');
+            return;
+        }
+        if(!avstream) {
             return;
         }
         setAllowUser(true);
@@ -117,7 +124,7 @@ function Joinroom(props) {
                 if(_mail === usermail) {
                     if(allow) {
                         dispatch(manageAction.setrouteMeet(true));
-                        history.push(`/meet/${meetid}`);
+                        history.replace(`/meet/${meetid}`);
                     }
                     if(!allow) {
                         setAllowUser(false)
@@ -163,7 +170,12 @@ function Joinroom(props) {
                     onClose={() => setError('')}
                     action={
                         <>
-                            <IconButton size="small" aria-label="close" onClick={() => setError('')}>
+                            <IconButton 
+                                aria-label="close" 
+                                color="inherit"
+                                size="small" 
+                                onClick={() => setError('')}
+                            >
                                 <CloseIcon/>
                             </IconButton>
                         </>

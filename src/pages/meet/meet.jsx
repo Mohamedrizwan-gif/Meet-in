@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 
-import { streamAction } from '../../store/index';
+import { manageAction } from '../../store/index';
 import Video from '../../components/layout-meet/video/video';
 import socket from '../../utils/socket';
 import styles from  './meet.module.css';
@@ -101,8 +101,8 @@ function Meet() {
                     length++;
                 }
             // }
-            flip++;
-            dispatch(streamAction.setFlipCamera(flip));
+            ++flip;
+            dispatch(manageAction.setFlipCamera(flip));
         }
         catch(err) {
             if(err.message === 'Could not start video source') {

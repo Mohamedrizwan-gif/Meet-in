@@ -1,7 +1,7 @@
 import { memo, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import { Button, Menu, MenuItem, Badge } from '@material-ui/core';
 import CallEndIcon from '@material-ui/icons/CallEnd';
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import MicIcon from '@material-ui/icons/Mic';
@@ -13,7 +13,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import PeopleIcon from '@material-ui/icons/People';
 import ChatIcon from '@material-ui/icons/Chat';
 
-import { streamAction } from '../../../store/index';
+import { streamAction, manageAction } from '../../../store/index';
 import socket from '../../../utils/socket';
 import Info from './info/info';
 import People from './people/people';
@@ -37,14 +37,13 @@ function Controls() {
     const [activeUsers, setActiveUser] = useState([]);
     // messages
     const [msg, setMsg] = useState([]);
+    const [newmsg, setNewMsg] = useState(false);
     // router
     const history = useHistory();
     // redux
     const dispatch = useDispatch();
-    /* selector ---> stream */
     const avstream = useSelector(state => state.stream.avstream);
     const currentpeer = useSelector(state => state.stream.current_peer);
-    /* selector ---> auth */
     const username = useSelector(state => state.auth.user_name);
     const usermail = useSelector(state => state.auth.user_mail);
 
@@ -215,6 +214,7 @@ function Controls() {
             setMsg(prev => [...prev, {message: chatMsg, username, time, me: true}]);
         });
         socket.on('message-users', ({chatMsg, username, time}) => {
+            setNewMsg(true);
             setMsg(prev => [...prev, {message: chatMsg, username, time, me: false}]);
         });
         // 
@@ -239,8 +239,9 @@ function Controls() {
             }
             setAudio(audio);
             setVideo(video);
+            dispatch(manageAction.setSpin(false));
         });
-    },[avstream]);
+    },[dispatch, avstream]);
 
     useEffect(() => {
         return () => {
@@ -283,9 +284,22 @@ function Controls() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={onToggleInfo}><InfoIcon/></MenuItem>
-                <MenuItem onClick={onTogglePeople}><PeopleIcon/></MenuItem>
-                <MenuItem onClick={onToggleChat}><ChatIcon/></MenuItem>
+                <MenuItem style={{paddingTop: '10px'}} onClick={onToggleInfo}>
+                    <InfoIcon/>
+                </MenuItem>
+                <MenuItem style={{paddingTop: '10px'}} onClick={onTogglePeople}>
+                    <PeopleIcon/>
+                </MenuItem>
+                <MenuItem style={{paddingTop: '10px'}} onClick={onToggleChat}>
+                    {newmsg ?
+                    <Badge badgeContent={msg.length} color="primary">
+                        <ChatIcon/>
+                    </Badge>
+                    :
+                    <ChatIcon/>
+                    }
+
+                </MenuItem>
             </Menu>
         </>
     )

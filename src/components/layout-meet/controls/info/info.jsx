@@ -20,6 +20,7 @@ function Info(props) {
 
     const handleTooltipOpen = () => {
         setOpen(true);
+        setTimeout(() => setOpen(false), 500);
     }
 
     const handleClose = () => {
@@ -44,8 +45,8 @@ function Info(props) {
                             PopperProps={{
                                 disablePortal: true,
                             }}
-                            onClose={handleTooltipClose}
                             open={open}
+                            onClose={handleTooltipClose}
                             disableFocusListener
                             disableHoverListener
                             disableTouchListener

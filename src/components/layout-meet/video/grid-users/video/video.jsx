@@ -1,4 +1,5 @@
 import { useState ,useEffect, useRef, memo } from 'react';
+import { useSelector } from 'react-redux';
 import MicOffIcon from '@material-ui/icons/MicOff';
 
 import maximize from '../../../../../assets/icons/maximize.svg';
@@ -13,6 +14,10 @@ function Video(props) {
     const [viewFullScreen, setViewFullScreen] = useState(false);
     const videoref = useRef();
     const imgref = useRef();
+    const _username = useSelector(state => state.auth.user_name);
+    const _userimg = useSelector(state => state.auth.user_img);
+    const flipcamera = useSelector(state => state.manage.flip_camera);
+    const avstream = useSelector(state => state.stream.avstream);
 
     useEffect(() => {        
         // let audioCtx = new AudioContext();
@@ -33,7 +38,16 @@ function Video(props) {
         // return () => {
         //     clearInterval(interval);
         // }
-    },[]);
+        if(flipcamera) {
+            if(props.index === 0) {
+                const last = avstream.getVideoTracks().length - 1;
+                const audiostream = avstream.getAudioTracks();
+                const videostream = [avstream.getVideoTracks()[last]];
+                const combinedstream = new MediaStream([...audiostream, ...videostream]);
+                videoref.current.srcObject = combinedstream
+            }
+        }
+    },[flipcamera, avstream, props.index]);
 
 
     useEffect(() => {
@@ -49,31 +63,59 @@ function Video(props) {
     }, [props.stream, props.index]);
 
     useEffect(() => {
-        if(props.controls) {
-            const control = props.controls.find(ctrl => ctrl.id === props.stream.id);
-            if(control) {
-                const user = props.users.find(user => user.stream_id === control.id);
-                if(user) {
-                    imgref.current.src = user.userimg;
-                    setUsername(user.username);
-                }
-                if(control.video) {
+        if(props.index === 0) {
+            if(_userimg) {
+                imgref.current.src = _userimg;
+            }
+            if(_username) {
+                setUsername(_username);
+            }
+            props.stream.getVideoTracks().forEach(track => {
+                if(track.enabled) {
                     setVideoOff(false);
                     imgref.current.style.display = "none";
                 }
-                if(!control.video) {
+                if(!track.enabled) {
                     setVideoOff(true);
                     imgref.current.style.display = "inline-block";
                 }
-                if(control.audio) {
+            });
+            props.stream.getAudioTracks().forEach(track => {
+                if(track.enabled) {
                     setMicOff(false);
                 }
-                if(!control.audio) {
+                if(!track.enabled) {
                     setMicOff(true);
+                }
+            });
+        }
+        if(props.index !== 0) {
+            if(props.controls) {
+                const control = props.controls.find(ctrl => ctrl.id === props.stream.id);
+                if(control) {
+                    const user = props.users.find(user => user.stream_id === control.id);
+                    if(user) {
+                        imgref.current.src = user.userimg;
+                        setUsername(user.username);
+                    }
+                    if(control.video) {
+                        setVideoOff(false);
+                        imgref.current.style.display = "none";
+                    }
+                    if(!control.video) {
+                        setVideoOff(true);
+                        imgref.current.style.display = "inline-block";
+                    }
+                    if(control.audio) {
+                        setMicOff(false);
+                    }
+                    if(!control.audio) {
+                        setMicOff(true);
+                    }
                 }
             }
         }
-    }, [props.controls, props.users, props.stream]);
+    }, [_username, _userimg, props.index, props.controls, props.users, props.stream]);
 
     return (
         <div className={props.length === 1 ? styles.overlay : ''} style={{
@@ -85,7 +127,6 @@ function Video(props) {
             <video 
                 ref={videoref}
                 className={`${styles.video} ${viewFullScreen ? styles.fullscreen : ''}`}  
-                // muted={props.index !== 0 ? "muted" : ''}
                 autoPlay
             /> 
             <div className={styles.username}>{props.index === 0 ? 'you' : username}</div>

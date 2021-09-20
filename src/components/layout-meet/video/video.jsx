@@ -1,25 +1,17 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import { CircularProgress, Backdrop } from '@material-ui/core';
 import Peer from 'peerjs';
 
 import { streamAction } from '../../../store/index';
 import socket from '../../../utils/socket';
 import Controls from '../controls/controls';
 import Gridusers from './grid-users/grid-users';
-// import { makeStyles } from '@material-ui/styles';
-
 import './video.css';
 
 const peers = {}
 let timer;
-
-// const useStyles = makeStyles((theme) => ({
-//     backdrop: {
-//         zIndex: theme.zIndex.drawer + 1,
-//         color: '#fff',
-//     }
-// }));
 
 function Video() {
     const [streams, setStream] = useState([]);
@@ -29,16 +21,14 @@ function Video() {
     const [userEmitted, setUserEmitted] = useState(false);
     const params = useParams();
     const history = useHistory();
-    // const classes = useStyles();
     // redux
     const dispatch = useDispatch();
-    /* selector ---> stream */
     const avstream = useSelector(state => state.stream.avstream);
     const screenstream = useSelector(state => state.stream.screen_stream);
-    /* selector ---> auth */
     const username = useSelector(state => state.auth.user_name);
     const usermail = useSelector(state => state.auth.user_mail);
     const userimg = useSelector(state => state.auth.user_img);
+    const spin = useSelector(state => state.manage.spin);
     // 
     const peer = useMemo(() => new Peer(undefined),[]);
     const peerList = useMemo(() => [],[]);
@@ -51,15 +41,12 @@ function Video() {
                     dispatch(streamAction.setCurrentPeer(call.peerConnection));
                     peerList.push(call.peer);
                 }
-                let length = 1;
                 // get stream from other user
                 call.on('stream', userVideoStream => {
-                    if(length === 1) {
-                        setStream(prev => [...prev, userVideoStream]);
-                    }
-                    if(userVideoStream) {
-                        length++;
-                    }
+                    setStream(prev => {
+                        const streams = prev.filter(stream => stream.id !== userVideoStream.id);
+                        return [...streams, userVideoStream];
+                    });
                 });
                 peers[peerId] = call;
             });
@@ -76,15 +63,12 @@ function Video() {
             const videoTrack = screenstream.getVideoTracks()[0];
             const sender = call.peerConnection.getSenders().find(s => s.track.kind === videoTrack.kind);
             sender.replaceTrack(videoTrack);
-            let length = 1;
             // get stream from other user
             call.on('stream', userVideoStream => {
-                if(length === 1) {
-                    setStream(prev => [...prev, userVideoStream]);
-                }
-                if(userVideoStream) {
-                    length++;
-                }
+                setStream(prev => {
+                    const streams = prev.filter(stream => stream.id !== userVideoStream.id);
+                    return [...streams, userVideoStream];
+                });
             });
             peers[peerId] = call;
         }
@@ -173,9 +157,14 @@ function Video() {
 
     return (
         <>
-            {/* <Backdrop className={classes.backdrop} open={true}>
+            {spin &&
+            <Backdrop
+                open={true}
+                style={{zIndex: 3}}
+            >
                 <CircularProgress color="inherit"/>
-            </Backdrop> */}
+            </Backdrop>
+            }
             {/* video */}
             <Gridusers controls={controls} users={users} streams={streams}/>
             {/* controls */}
