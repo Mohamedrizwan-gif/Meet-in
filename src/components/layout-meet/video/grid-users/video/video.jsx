@@ -57,6 +57,9 @@ function Video(props) {
         if(props.index === 0) {
             videoref.current.volume = 0;
         }
+        else {
+            videoref.current.volume = 0.9;
+        }
         if(props.stream.getVideoTracks().length === 0) {
             videoref.current.style.backgroundColor = 'black';
         }
@@ -70,7 +73,14 @@ function Video(props) {
             if(_username) {
                 setUsername(_username);
             }
-            props.stream.getVideoTracks().forEach(track => {
+            if(props?.stream?.getVideoTracks().length === 0) {
+                setVideoOff(true);
+                imgref.current.style.display = "inline-block";
+            }
+            if(props?.stream?.getAudioTracks().length === 0) {
+                setMicOff(true);
+            }
+            props?.stream?.getVideoTracks().forEach(track => {
                 if(track.enabled) {
                     setVideoOff(false);
                     imgref.current.style.display = "none";
@@ -80,7 +90,7 @@ function Video(props) {
                     imgref.current.style.display = "inline-block";
                 }
             });
-            props.stream.getAudioTracks().forEach(track => {
+            props?.stream?.getAudioTracks().forEach(track => {
                 if(track.enabled) {
                     setMicOff(false);
                 }

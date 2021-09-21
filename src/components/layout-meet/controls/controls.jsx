@@ -149,6 +149,7 @@ function Controls() {
 
     const handleClose = () => {
         setAnchorEl(null);
+        setNewMsg(false);
     }
 
     /* Info */

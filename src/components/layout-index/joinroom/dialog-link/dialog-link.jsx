@@ -25,7 +25,7 @@ function DialogLink(props) {
     }
 
     return (
-        <Dialog onClose={handleClose} open={props.open}>
+        <Dialog open={props.open} onClose={handleClose}>
             <DialogTitle>
                 <span className={styles.dialogtitle}>link to your meeting</span>
                 <Button style={{position: 'absolute'}} onClick={handleClose}><CloseIcon/></Button>

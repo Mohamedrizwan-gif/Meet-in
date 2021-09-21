@@ -131,20 +131,18 @@ function Index() {
                     videoTracks = myVideo.current.srcObject.getVideoTracks();
                 }
                 if(audioTracks.length === 0) {
-                    // to disable audio button
                     setDisableAudio(true);
-                    // enable MicOff button 
                     setAudio(false); 
                 }
                 if(videoTracks.length === 0) {
-                    myVideo.current.style.backgroundColor = 'black';
-                    // to disable video button
+                    if(myVideo.current) {
+                        myVideo.current.style.backgroundColor = 'black';
+                    }
                     setDisableVideo(true);
-                    // enable VideocamOff button 
                     setVideo(false); 
                 }
         })();
-    },[dispatch]);
+    },[dispatch, myVideo]);
 
     return (
         <div onClick={onBackground}>

@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { 
-    Avatar, Dialog, DialogTitle, DialogContent, 
-    DialogActions, Button, Divider 
+    Avatar, Dialog, DialogTitle, DialogContent, DialogActions, 
+    Button, Divider, LinearProgress, Box 
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import RemoveCircleOutlinedIcon from '@material-ui/icons/RemoveCircleOutline';
@@ -39,6 +39,11 @@ function People(props) {
                 <Button className={styles.closebtn} onClick={props.close}><CloseIcon/></Button>
             </DialogTitle>
             <DialogContent>
+                {props.users.length === 0 &&
+                <Box style={{width: '200px'}}>
+                    <LinearProgress />
+                </Box>
+                }
                 {props.users.map((user, index) => {
                     return (
                     <div key={index}>

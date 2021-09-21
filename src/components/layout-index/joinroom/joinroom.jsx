@@ -34,6 +34,8 @@ function DialogInvalid(props) {
 function Joinroom(props) {
     const [open, setOpen] = useState(false);
     const [inValidID, setInValidID] = useState(false);
+    const [enterroom, setEnterRoom] = useState(false);
+    const [btnclicked, setBtnClicked] = useState(false);
     const [allowUser, setAllowUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [meetid, setMeetId] = useState('');
@@ -104,6 +106,7 @@ function Joinroom(props) {
         if(!avstream) {
             return;
         }
+        setBtnClicked(true);
         setAllowUser(true);
         socket.emit('onjoin', {meetid, username, usermail, userimg});
     }
@@ -119,12 +122,19 @@ function Joinroom(props) {
                 setInValidID(true);
             }
         });
+        socket.on('enter-room', (enter) => {
+            if(enter) {
+                setEnterRoom(true);
+            }
+        });
         socket.on('join', ({username: _name, usermail: _mail, allow}) => {
             if(_name === username) {
                 if(_mail === usermail) {
                     if(allow) {
-                        dispatch(manageAction.setrouteMeet(true));
-                        history.replace(`/meet/${meetid}`);
+                        if(btnclicked) {
+                            dispatch(manageAction.setrouteMeet(true));
+                            history.replace(`/meet/${meetid}`);
+                        }
                     }
                     if(!allow) {
                         setAllowUser(false)
@@ -132,7 +142,7 @@ function Joinroom(props) {
                 }
             }
         });
-    }, [dispatch, history, meetid, username, usermail]);
+    }, [dispatch, history, meetid, username, usermail, btnclicked]);
 
     useEffect(() => {
         if(params.roomid) {
@@ -151,6 +161,7 @@ function Joinroom(props) {
             socket.off('created-instant-meeting');
             socket.off('created-meeting-id');
             socket.off('invalid-id');
+            socket.off('enter-room');
             socket.off('join');
         }
     }, []);
@@ -211,10 +222,12 @@ function Joinroom(props) {
                     Join&nbsp;<QueueIcon/>
                 </Button>
                 {allowUser &&
-                    <>
-                    <div className={styles.joinrequest}>Asking to join...</div>
+                    <div style={{marginTop: '5px'}}>
                     <CircularProgress/>
-                    </>
+                    {enterroom &&
+                    <div className={styles.joinrequest}>Asking to join...</div>
+                    }
+                    </div>
                 }
                 {allowUser === false &&
                 <div className={styles.joinrequest}>You can't join this meeting</div>

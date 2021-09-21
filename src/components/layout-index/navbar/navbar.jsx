@@ -27,7 +27,7 @@ function Navbar(props) {
                 url: `${window.location.href}${meetid}`
             })
             .then(() => {
-                console.log('shared succesfully');
+                console.log('');
             })
             .catch(err => {
                 console.log(err);
@@ -46,16 +46,14 @@ function Navbar(props) {
         }
     }
 
-    const handleTooltipOpen = () => {
+    const handleOpen = () => {
         setOpen(true);
-        // setTimeout(() => setOpen(false), 500);
     }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
-        }
-    
+        }    
         setOpen(false);
     }
 
@@ -69,10 +67,10 @@ function Navbar(props) {
     useEffect(() => {
         if(usermail) {
             socket.emit('login', usermail);
-            socket.on('login-credential', meetingcredential => {
-                setRecentMeetings(meetingcredential);
-            });
         }
+        socket.on('login-credential', meetingcredential => {
+            setRecentMeetings(meetingcredential);
+        });
         const interval = setInterval(() => {
             const time = new Date().toLocaleTimeString().split(' ');
             const currenttime = time[0].split(':');
@@ -82,7 +80,7 @@ function Navbar(props) {
         return () => {
             clearInterval(interval);
         }
-    },[usermail]);
+    }, [usermail]);
 
     useEffect(() => {
         return () => {
@@ -135,7 +133,7 @@ function Navbar(props) {
                                                         <tr key={index}> 
                                                             <td>
                                                                 <CopyToClipboard text={data.meet_id}> 
-                                                                    <Button onClick={handleTooltipOpen}>{data.meet_id}</Button>
+                                                                    <Button onClick={handleOpen}>{data.meet_id}</Button>
                                                                 </CopyToClipboard>
                                                             </td>
                                                             <td>

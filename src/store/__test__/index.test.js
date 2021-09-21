@@ -1,15 +1,33 @@
 import { manageReducer, authReducer, streamReducer, manageAction } from '../index';
 
 describe('Redux store', () => {
+    const previousState = { route_meet: false, spin: true, flip_camera: 0 };
     test('managestate should return the initial state', () => {
         expect(manageReducer(undefined, {})).toEqual({
-            route_meet: false
+            route_meet: false,
+            spin: true,
+            flip_camera: 0
         });
     });
     test('managestate should handle route_meet state being added to it', () => {
-        const previousState = { route_meet: false }
         expect(manageReducer(previousState, manageAction.setrouteMeet(true))).toEqual({
-            route_meet: true
+            route_meet: true,
+            spin: true,
+            flip_camera: 0
+        });
+    });
+    test('managestate should handle spin state being added to it', () => {
+        expect(manageReducer(previousState, manageAction.setSpin(false))).toEqual({
+            route_meet: false,
+            spin: false,
+            flip_camera: 0
+        });
+    });
+    test('managestate should handle flip_camera state being added to it', () => {
+        expect(manageReducer(previousState, manageAction.setFlipCamera(1))).toEqual({
+            route_meet: false,
+            spin: true,
+            flip_camera: 1
         });
     });
     test('authstate should return the initial state', () => {
@@ -26,7 +44,6 @@ describe('Redux store', () => {
             active_badge: null,
             active_stream: null,
             current_peer: null,
-            flip_camera: null
-        })
+        });
     });
 });

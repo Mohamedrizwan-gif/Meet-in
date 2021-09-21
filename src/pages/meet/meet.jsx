@@ -117,7 +117,7 @@ function Meet() {
             const time = new Date().toLocaleTimeString().split(':');
             const currenttime = `${time[0]}:${time[1]} ${time[2].split(' ')[1].toLowerCase()}`;
             setTime(currenttime);    
-        },1000);
+        }, 1000);
         if(routemeet) {
             socket.on('user-connected', ({username}) => {
                 setUserConnected({username, connected: true});
@@ -259,30 +259,6 @@ function Meet() {
             })
             }
             <Video/>
-            {/* <Transition in={btntop} timeout={600} mountOnEnter unmountOnExit>
-                {state => {
-                    const animatestate = state === "entering" ? styles['roominfo-open'] : state === "exiting" ? styles['roominfo-close'] : '';
-                    const classes = [styles.roominfo, animatestate];
-                    return(
-                        <div className={classes.join(' ')}>
-                            {time} | {params.roomid}
-                        </div>
-                    )
-                }}   
-            </Transition>
-            <Transition in={menu} timeout={400} mountOnEnter unmountOnExit> 
-                {state => {
-                    const animestate = state === "entering" ? styles['btn-group-menu-open'] : state === "exiting" ? styles['btn-group-menu-close'] : '';
-                    const classes = [styles['btn-group-menu'], animestate];
-                    return (
-                        <Box boxShadow={10} className={classes.join(' ')}>
-                            <Button style={{minWidth:'40px'}} onClick={onToggleInfo}><InfoIcon/></Button><br/>
-                            <Button style={{minWidth:'40px'}} onClick={onToggleChat}><ChatIcon/></Button><br/>
-                            <Button style={{minWidth:'40px'}} onClick={onTogglePeople}><PeopleIcon/></Button>
-                        </Box>
-                    )
-                }}
-            </Transition> */}
         </div>
     )
 }

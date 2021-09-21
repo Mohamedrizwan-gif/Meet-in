@@ -14,14 +14,17 @@ function Chat(props) {
     const chatRef = useRef(null);
 
     const onChatMsg = (e) => {
-        if(e.length <= 0) {
+        if(e.length === 0) {
             setDisabled(true);
         }
+        else {
+            setDisabled(false);
+        }
         setchatMsg(e)
-        setDisabled(false);
     }
 
     const onSend = () => {
+        console.log(inputRef.current)
         const username = localStorage.getItem('auth_name');
         const time = new Date().toLocaleTimeString().split(':');
         const currenttime = `${time[0]}:${time[1]} ${time[2].split(' ')[1].toLowerCase()}`;           
@@ -35,12 +38,14 @@ function Chat(props) {
     }
 
     useEffect(() => {
-        setTimeout(()=> {
-            if(inputRef.current) {
-                inputRef.current.focus();
-            }
-        });
-    },[]);
+        if(props.open) {
+            setTimeout(()=> {
+                if(inputRef.current) {
+                    inputRef.current.focus();
+                }
+            }, 500);
+        }
+    }, [inputRef, props.open]);
 
     return (
         <Dialog scroll={'paper'} maxWidth={'sm'} fullWidth={true} open={props.open} onClose={props.close}>
