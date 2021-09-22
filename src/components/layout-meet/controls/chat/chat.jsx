@@ -24,7 +24,9 @@ function Chat(props) {
     }
 
     const onSend = () => {
-        console.log(inputRef.current)
+        if(chatMsg.length === 0) {
+            return;
+        }
         const username = localStorage.getItem('auth_name');
         const time = new Date().toLocaleTimeString().split(':');
         const currenttime = `${time[0]}:${time[1]} ${time[2].split(' ')[1].toLowerCase()}`;           
