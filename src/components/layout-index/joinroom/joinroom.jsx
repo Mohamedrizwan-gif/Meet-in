@@ -36,6 +36,8 @@ function Joinroom(props) {
     const [inValidID, setInValidID] = useState(false);
     const [enterroom, setEnterRoom] = useState(false);
     const [btnclicked, setBtnClicked] = useState(false);
+    const [deny, setDeny] = useState(true);
+    const [showspin, setShowSpin] = useState(true);
     const [notallowed, setNotAllowed] = useState(true);
     const [allowUser, setAllowUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -108,8 +110,10 @@ function Joinroom(props) {
         if(!avstream) {
             return;
         }
+        setShowSpin(true);
         setBtnClicked(true);
         setAllowUser(true);
+        setDeny(true);
         socket.emit('onjoin', {meetid, username, usermail, userimg});
     }
 
@@ -159,9 +163,32 @@ function Joinroom(props) {
     }, [params.roomid]);
 
     useEffect(() => {
+        let timer1;
+        let timer2;
+        let timer3;
         if(notallow) {
-            setTimeout(() => setNotAllowed(false), 7000);
+            timer1 = setTimeout(() => setNotAllowed(false), 7000);
         }
+        if(allowUser) {
+            timer2 = setTimeout(() => setShowSpin(false), 10000);
+        }
+        if(allowUser === false) {
+            timer3 = setTimeout(() => setDeny(false), 8000);
+        }
+        return () => {
+            if(timer1) {
+                clearTimeout(timer1);
+            }
+            if(timer2) {
+                clearTimeout(timer2);
+            }
+            if(timer3) {
+                clearTimeout(timer3);
+            }
+        }
+    }, [notallow, allowUser]);
+
+    useEffect(() => {
         return () => {
             socket.off('created-instant-meeting');
             socket.off('created-meeting-id');
@@ -169,7 +196,7 @@ function Joinroom(props) {
             socket.off('enter-room');
             socket.off('join');
         }
-    }, [notallow]);
+    }, []);
 
     return (
         <>
@@ -232,7 +259,7 @@ function Joinroom(props) {
                 <Button className={styles.joinbtn} disabled={meetid.length <= 0} variant="contained" onClick={onJoin}>
                     Join&nbsp;<QueueIcon/>
                 </Button>
-                {allowUser &&
+                {allowUser && showspin &&
                     <div style={{marginTop: '5px'}}>
                     <CircularProgress/>
                     {enterroom &&
@@ -240,7 +267,7 @@ function Joinroom(props) {
                     }
                     </div>
                 }
-                {allowUser === false &&
+                {allowUser === false && deny &&
                 <div className={styles.joinrequest}>You can't join this meeting</div>
                 }
             </div>

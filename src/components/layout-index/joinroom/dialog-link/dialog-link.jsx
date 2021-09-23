@@ -5,6 +5,7 @@ import {
     Tooltip, Button
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import ShareIcon from '@material-ui/icons/Share';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import styles from './dialog-link.module.css';
@@ -22,6 +23,22 @@ function DialogLink(props) {
 
     const handleClose = () => {
         props.onClose();
+    }
+
+    const onShare = () => {
+        if(navigator.share) {
+            navigator.share({
+                title: 'Meet-in',
+                text: 'To join the meeting on the meet-in, click the link',
+                url: `https://meet-in.netlify.app/#/${props.meetid}`
+            })
+            .then(() => {
+                console.log('');
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
     }
 
     return (
@@ -58,6 +75,9 @@ function DialogLink(props) {
                         </Tooltip>
                     </div>
                 </ClickAwayListener>
+                <Button style={{marginLeft: 'inherit'}} variant="contained" onClick={onShare}>
+                    <ShareIcon/>
+                </Button>
             </DialogActions>
         </Dialog>
     )
