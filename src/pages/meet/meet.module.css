@@ -3,6 +3,12 @@
     min-height: 100vh;
 }
 
+.time {
+    border: 1px solid #dcd9d9;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 .toolbar {
     background-color: #484040;
     color: #fff;

@@ -4,6 +4,7 @@ import { createSlice, configureStore } from '@reduxjs/toolkit';
 const initialManageState = {
     route_meet: false,
     spin: true,
+    notallow: false,
     flip_camera: 0
 };
 
@@ -16,6 +17,9 @@ const manageSlice = createSlice({
         },
         setSpin(state, action) {
             state.spin = action.payload;
+        },
+        setNotAllow(state, action) {
+            state.notallow = action.payload;
         },
         setFlipCamera(state, action) {
             state.flip_camera = action.payload;

@@ -134,6 +134,8 @@ function Meet() {
                     if(avstream.id === id) {
                         socket.disconnect();
                         history.replace('/');
+                        dispatch(manageAction.setrouteMeet(false));
+                        dispatch(manageAction.setNotAllow(true));
                     }
                 }
             });
@@ -150,7 +152,7 @@ function Meet() {
         return () => {
             clearInterval(timer);
         }
-    }, [history, avstream, routemeet]);
+    }, [dispatch, history, avstream, routemeet]);
 
     useEffect(() => {
         if(routemeet) {
@@ -190,14 +192,12 @@ function Meet() {
     }, []);
 
     return (
-        <div className={styles.meet}>
+        <div id="meet" className={styles.meet}>
             <AppBar id="meet_navbar" position="static">
                 <Toolbar className={styles.toolbar}>
-                    <div>
-                        <Button style={{color: 'white'}} variant="outlined">
-                            {time}
-                        </Button>
-                    </div>
+                    {time.length !== 0 &&
+                    <div className={styles.time}>{time}</div>
+                    }
                     <Button className={styles['btn-flipcamera']} variant="outlined" onClick={onFlipCamera}>
                         <FlipCameraAndroidIcon/>
                     </Button>

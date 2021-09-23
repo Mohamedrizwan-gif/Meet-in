@@ -33,16 +33,23 @@
     font-size: 15px;
 }
 
-.input-send {
+.sendoverlay {
     width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.input-send {
+    width: 75%;
     padding: 10px;
+    text-align: initial !important;
     background-color: #dfdddd;
-    border-radius: 15px;
+    border-radius: 5px;
     border: 1px solid #bfbaba;
     outline: none;
 }
 
 .btn-send {
-    position: absolute !important;
-    right: 6px;
+    min-width: 57px !important;
+    border-radius: 5px;
 }

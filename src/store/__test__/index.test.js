@@ -1,11 +1,12 @@
 import { manageReducer, authReducer, streamReducer, manageAction } from '../index';
 
 describe('Redux store', () => {
-    const previousState = { route_meet: false, spin: true, flip_camera: 0 };
+    const previousState = { route_meet: false, spin: true, notallow: false, flip_camera: 0 };
     test('managestate should return the initial state', () => {
         expect(manageReducer(undefined, {})).toEqual({
             route_meet: false,
             spin: true,
+            notallow: false,
             flip_camera: 0
         });
     });
@@ -13,6 +14,7 @@ describe('Redux store', () => {
         expect(manageReducer(previousState, manageAction.setrouteMeet(true))).toEqual({
             route_meet: true,
             spin: true,
+            notallow: false,
             flip_camera: 0
         });
     });
@@ -20,6 +22,7 @@ describe('Redux store', () => {
         expect(manageReducer(previousState, manageAction.setSpin(false))).toEqual({
             route_meet: false,
             spin: false,
+            notallow: false,
             flip_camera: 0
         });
     });

@@ -36,6 +36,7 @@ function Joinroom(props) {
     const [inValidID, setInValidID] = useState(false);
     const [enterroom, setEnterRoom] = useState(false);
     const [btnclicked, setBtnClicked] = useState(false);
+    const [notallowed, setNotAllowed] = useState(true);
     const [allowUser, setAllowUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [meetid, setMeetId] = useState('');
@@ -47,6 +48,7 @@ function Joinroom(props) {
     const usermail = useSelector(state => state.auth.user_mail);
     const userimg = useSelector(state => state.auth.user_img);
     const avstream = useSelector(state => state.stream.avstream);
+    const notallow = useSelector(state => state.manage.notallow);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -157,6 +159,9 @@ function Joinroom(props) {
     }, [params.roomid]);
 
     useEffect(() => {
+        if(notallow) {
+            setTimeout(() => setNotAllowed(false), 7000);
+        }
         return () => {
             socket.off('created-instant-meeting');
             socket.off('created-meeting-id');
@@ -164,7 +169,7 @@ function Joinroom(props) {
             socket.off('enter-room');
             socket.off('join');
         }
-    }, []);
+    }, [notallow]);
 
     return (
         <>
@@ -196,6 +201,12 @@ function Joinroom(props) {
                 <DialogLink meetid={meetid} open={open} onClose={handleCloseModal}/>
                 <DialogInvalid open={inValidID} close={() => setInValidID(false)}/>
                 {/*  */}
+                {notallow && notallowed &&
+                <>
+                    <div className={styles.joinrequest}>Someone in the meeting Removed you</div>
+                    <br/>
+                </>
+                }
                 <Button data-testid="New Meeting" className={styles.newmeetbtn} color="primary" variant="contained" onClick={handleClick}>
                     New Meeting&nbsp;<VideoCallIcon/>
                 </Button>

@@ -49,10 +49,15 @@ function Video(props) {
         }
     },[flipcamera, avstream, props.index]);
 
-
     useEffect(() => {
         const navbarheight = document.getElementById('meet_navbar').offsetHeight;
-        setScreenHeight((window.screen.height / 2) - (navbarheight/2) + 'px');
+        const meetheight = document.getElementById('meet').offsetHeight;
+        if(props.length === 1) {
+            setScreenHeight((meetheight - (navbarheight + navbarheight)) + 'px');
+        }
+        else {
+            setScreenHeight((window.screen.height / 2) - (navbarheight/2) + 'px');    
+        }
         videoref.current.srcObject = props.stream;
         if(props.index === 0) {
             videoref.current.volume = 0;
@@ -63,7 +68,7 @@ function Video(props) {
         if(props.stream.getVideoTracks().length === 0) {
             videoref.current.style.backgroundColor = 'black';
         }
-    }, [props.stream, props.index]);
+    }, [props.stream, props.index, props.length]);
 
     useEffect(() => {
         if(props.index === 0) {
@@ -128,7 +133,8 @@ function Video(props) {
     }, [_username, _userimg, props.index, props.controls, props.users, props.stream]);
 
     return (
-        <div className={props.length === 1 ? styles.overlay : ''} style={{
+        // className={props.length === 1 ? styles.overlay : ''}
+        <div style={{
             position: 'relative',
             width: props.length < 4 ? '95%' : '49%', 
             height: screenheight,

@@ -73,15 +73,23 @@ function Chat(props) {
                     })}
             </DialogContent>
             <DialogActions>
-                <div style={{width:'100%'}}>
+                <div className={styles.sendoverlay}>
                     <input 
                         ref={inputRef}
                         className={styles['input-send']}
                         placeholder="Send a message to everyone" 
+                        title="Send a message to everyone"
                         value={chatMsg} 
                         onChange={e => onChatMsg(e.target.value)} 
                     />
-                    <Button data-testid="sendbtn" disabled={disabled} className={styles['btn-send']} onClick={onSend} color="primary">
+                    <Button 
+                        data-testid="sendbtn" 
+                        color="primary"
+                        variant="outlined"
+                        disabled={disabled} 
+                        className={styles['btn-send']} 
+                        onClick={onSend} 
+                    >
                         <SendIcon/>
                     </Button>
                 </div>
