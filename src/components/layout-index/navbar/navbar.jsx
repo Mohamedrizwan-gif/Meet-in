@@ -12,6 +12,7 @@ import styles from './navbar.module.css';
 
 function Navbar(props) {
     const [timedate, setTimeDate] = useState('');
+    const [showtime, setShowTime] = useState(true);
     const [recentMeetings, setRecentMeetings] = useState([]);
     const [open, setOpen] = useState(false);
     const username = useSelector(state => state.auth.user_name);
@@ -65,6 +66,12 @@ function Navbar(props) {
     }
 
     useEffect(() => {
+        if(timedate.includes('undefined')) {
+            setShowTime(false);
+        }
+    },[timedate]);
+
+    useEffect(() => {
         if(usermail) {
             socket.emit('login', usermail);
         }
@@ -91,7 +98,9 @@ function Navbar(props) {
     return (
         <>
             <div className={styles.header}>Meet-in</div>
+            {showtime &&
             <div className={styles.date}>{timedate}</div>
+            }
             <Snackbar
                 open={open}
                 onClose={handleClose}
@@ -192,8 +201,12 @@ function Navbar(props) {
                             <Button onClick={onSignout} className={styles.popup_btn} variant="outlined">
                                 Sign out
                             </Button>
+                            {showtime &&
+                            <>
                             <Divider/>
                             <div className={styles.timedate}>{timedate}</div>
+                            </>
+                            }
                         </Box>
                     }
                 </>
