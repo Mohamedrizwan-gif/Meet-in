@@ -38,14 +38,14 @@ function Video(props) {
         // return () => {
         //     clearInterval(interval);
         // }
-        if(flipcamera) {
-            if(props.index === 0) {
-                const last = avstream.getVideoTracks().length - 1;
-                const audiostream = avstream.getAudioTracks();
-                const videostream = [avstream.getVideoTracks()[last]];
-                const combinedstream = new MediaStream([...audiostream, ...videostream]);
-                videoref.current.srcObject = combinedstream
+        if(props.index === 0) {
+            const audiostream = avstream.getAudioTracks();
+            let videostream = [];
+            if(avstream.getVideoTracks()[flipcamera]) {
+                videostream = [avstream.getVideoTracks()[flipcamera]];
             }
+            const combinedstream = new MediaStream([...audiostream, ...videostream]);
+            videoref.current.srcObject = combinedstream
         }
     },[flipcamera, avstream, props.index]);
 

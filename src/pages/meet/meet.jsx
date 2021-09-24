@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { 
-    Button, Snackbar, AppBar, Toolbar, 
-    Dialog, DialogTitle, DialogContent, 
-    DialogContentText, DialogActions, Avatar 
+    Button, Snackbar, AppBar, Toolbar, Dialog, 
+    DialogTitle, DialogContent, DialogContentText, 
+    DialogActions, Avatar 
 } from '@material-ui/core';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 
@@ -41,6 +41,7 @@ function Meet() {
     const [unPresentingScreen ,setUnPresentingScreen] = useState(null);
     const [userConnected, setUserConnected] = useState({username:'', connected: false});
     const [userDisconnected, setUserDisconnected] = useState({username:'', connected: false});
+    const [fliperror, setFlipError] = useState('');
     const [time, setTime] = useState('');
     const history = useHistory();
     const dispatch = useDispatch();
@@ -53,7 +54,6 @@ function Meet() {
     const routemeet = useSelector(state => state.manage.route_meet);
     // 
     let length = 1;
-    let flip = 0;
 
     const closeAlertDialog = (result, newusername, newusermail) => {
         if(result === 'allow') {
@@ -67,7 +67,7 @@ function Meet() {
 
     const onFlipCamera = async() => {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-            console.log("enumerateDevices() not supported.");
+            setFlipError("enumerateDevices not supported.");
             return;
         }
         try {
@@ -101,12 +101,12 @@ function Meet() {
                     length++;
                 }
             // }
-            ++flip;
+            let flip = avstream.getVideoTracks().length - 1;
             dispatch(manageAction.setFlipCamera(flip));
         }
         catch(err) {
             if(err.message === 'Could not start video source') {
-                console.log('Please check the camera connection');
+                setFlipError('Please check the camera connection');
             }
             console.log(err);
         }
@@ -203,6 +203,16 @@ function Meet() {
                     </Button>
                 </Toolbar>
             </AppBar>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left'
+                }}
+                open={fliperror.length > 0}
+                autoHideDuration={3000}
+                message={fliperror}
+                onClose={() => { setFlipError('') }}
+            />
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
